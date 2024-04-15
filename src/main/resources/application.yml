@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: tdc-staff-mgmt-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false    
+  profiles:
+    active:
+    - dev    
+server:
+  port: 5052
+  
+
+  
+
+--- 
+#Dev Profile
+spring: 
+ datasource: 
+  url: jdbc:mysql://${STAFF_DB_HOST:localhost}:${STAFF_DB_PORT:3306}/${STAFF_DB:staff_management_module}
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  username: ${STAFF_DB_USER_NAME:root}
+  password: ${STAFF_DB_USER_PASSWORD:root}
+ 
+ config:
+    activate:
+      on-profile:
+      - dev
+---
+#QA Profile
+spring: 
+ datasource: 
+  url: jdbc:h2:mem:${STAFF_DB:weshopify-categories}
+  driver-class-name: org.h2.Driver
+  username: ${STAFF_DB_USER_NAME:sa}
+  password: ${STAFF_DB_USER_PASSWORD:admin}
+ h2:
+    console:
+      enabled: true
+      path: /h2Console
+ 
+ config:
+    activate:
+      on-profile:
+      - qa

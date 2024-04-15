@@ -1,0 +1,6 @@
+2024-03-23 00:11:41,085 INFO com.tdc.app.platform.TdcStaffMgmtServiceApplication [main] Starting TdcStaffMgmtServiceApplication using Java 17.0.10 with PID 9856 (F:\MS-CRM-WORKSPACE\tdc-staff-mgmt-service\target\classes started by user in F:\MS-CRM-WORKSPACE\tdc-staff-mgmt-service)
+2024-03-23 00:11:41,087 DEBUG com.tdc.app.platform.TdcStaffMgmtServiceApplication [main] Running with Spring Boot v3.2.3, Spring v6.1.4
+2024-03-23 00:11:41,087 INFO com.tdc.app.platform.TdcStaffMgmtServiceApplication [main] The following 1 profile is active: "dev"
+2024-03-23 00:11:44,800 INFO com.tdc.app.platform.TdcStaffMgmtServiceApplication [main] Started TdcStaffMgmtServiceApplication in 4.051 seconds (process running for 4.772)
+2024-03-23 00:12:25,438 ERROR com.tdc.app.platform.resource.DesigResourceController [http-nio-5052-exec-2] Desig list not found for the given id 
+2024-03-23 00:12:53,422 INFO com.tdc.app.platform.resource.DesigResourceController [http-nio-5052-exec-3] Designation data pulled successfully

@@ -11,7 +11,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "STAFF_EMPLOYMENT_DETAILS")
+//@Table(name = "STAFF_EMPLOYMENT_DETAILS")
+@Table(name="STAFF_DETAILS")
 @SecondaryTable(name = "STAFF_EDUCATION_DETAIL")
 public class StaffDetail {
 	/**

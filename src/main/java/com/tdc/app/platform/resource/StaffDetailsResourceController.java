@@ -2,16 +2,15 @@ package com.tdc.app.platform.resource;
 
 import java.util.List;
 
+import com.tdc.app.platform.constants.StaffDetailConstants;
+import com.tdc.app.platform.dto.ResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tdc.app.platform.constants.StaffServiceConstants;
@@ -143,5 +142,70 @@ public class StaffDetailsResourceController {
 	//Delete by id
 	//Delete within range(IN clause)
 	//Remove hard code constants
+
+	/**
+	 * Get The Employee Based on Experience
+	 * @return -> staffDetails
+	 * @Parrams -> integer value
+	 * @Throws -> exception
+	 *
+	 */
+
+	@GetMapping("exp/{experience}")
+	@Operation(summary = "Fetch staff detail by Experience", description = "fetches all staff detail entities and their data from data source by Experience")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
+	public StaffDetailResponse getStaffDetailByExperience(@PathVariable int experience) throws TDCServiceException {
+		StaffDetailResponse sdResponseDto = new StaffDetailResponse();
+		try {
+			List<StaffDetailDto> staffDetResponse = staffDetailService.getStaffByExperience(experience);
+			if (staffDetResponse != null && !staffDetResponse.isEmpty()) {
+				sdResponseDto.setStatusCode("200");
+				sdResponseDto.setDataList(staffDetResponse);
+				sdResponseDto.setStatusMessage("Staff Detail value retrieved");
+				LOGGER.info("Staff Detail data pulled successfully");
+			}
+			else{
+				sdResponseDto.setStatusCode("404");
+				ErrorMessage error = new ErrorMessage();
+				error.setErrorCode("404");
+				error.setErrorMessage("For "+experience +" experience we dont have any employee");
+				sdResponseDto.setError(error);
+			}
+
+
+		} catch (Exception ex) {
+			sdResponseDto.setStatusCode("404");
+			ErrorMessage error = new ErrorMessage();
+			error.setErrorCode("404");
+			error.setErrorMessage("Not able to fetch designation");
+			sdResponseDto.setError(error);
+			LOGGER.error("Staff detail list not found ", ex);
+			ex.printStackTrace();
+		}
+		return sdResponseDto;
+	}
+
+	/**
+	 * Delete by Stuff ID
+	 * @Params Staff id
+	 * @Return Status code
+	 */
+	@DeleteMapping("/delete")
+	public ResponseEntity<ResponseDto> deleteCardDetails(@RequestParam String staffId) {
+		Integer id= Integer.parseInt(staffId);
+		System.out.println("id :"+id);
+		boolean isDeleted = staffDetailService.deleteById(id);
+		System.out.println("isCheck :"+isDeleted);
+		if (isDeleted) {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseDto(StaffDetailConstants.STATUS_200, StaffDetailConstants.MESSAGE_200));
+		} else {
+			System.out.println("into the else part");
+			return ResponseEntity
+					.status(HttpStatus.EXPECTATION_FAILED)
+					.body(new ResponseDto(StaffDetailConstants.STATUS_417, StaffDetailConstants.MESSAGE_417_DELETE));
+		}
+	}
 
 }

@@ -165,7 +165,12 @@ public class StaffResourceController {
 
 	}
 
-
+	/**
+	 * Fetch staff details based on phoneNumber
+	 * @param phoneNumber
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
     @GetMapping("/staff/phoneNumber")
 	@Operation(summary = "Fetch staff by id",description="Get the Record based on PhoneNumber")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
@@ -191,6 +196,13 @@ public class StaffResourceController {
 		}
 
 	}
+
+	/**
+	 * Fetch staff details based on country
+	 * @param country
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	@GetMapping("/staff/country")
 	@Operation(summary = "Fetch staff by country",description="Get the Record based on country ")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
@@ -214,6 +226,12 @@ public class StaffResourceController {
 
 	}
 
+	/**
+	 * Fetch staff details based on Gender
+	 * @param Gender
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	@GetMapping("/staff/Gender")
 	@Operation(summary = "fetch details by Gender", description = "Fetch the stuff Details based on gender")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
@@ -236,7 +254,15 @@ public class StaffResourceController {
 
 		}
 
-	}@GetMapping("/staff/email")
+	}
+
+	/**
+	 * Fetch staff details based on email
+	 * @param email
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
+	@GetMapping("/staff/email")
 	@Operation(summary = "fetch details by email", description = "Fetch the stuff Details based on email")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
 	public ResponseEntity<StaffResponse> fetchStaffBYEmail(@RequestParam String email) throws ResourceNotFoundException{
@@ -261,6 +287,13 @@ public class StaffResourceController {
 		}
 
 	}
+
+	/**
+	 * Fetch staff details based on IsActive
+	 * @param isActive
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	@GetMapping("/staff/isActive")
 	@Operation(summary = "fetch details by Gender", description = "Fetch the stuff Details based on gender")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})

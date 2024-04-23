@@ -73,7 +73,7 @@ public class Staff implements Serializable{
 	private String password;
 	
 	@Column(name="IS_ACTIVE")
-	private Byte isActive;
+	private Boolean isActive;
 	
 	@Column(name="JOINING_DATE")
 	private String joiningDate;

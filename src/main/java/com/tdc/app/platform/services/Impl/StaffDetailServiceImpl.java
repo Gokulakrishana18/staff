@@ -117,7 +117,7 @@ public class StaffDetailServiceImpl implements StaffDetailService {
 //		staffDetailRepository.deleteById(staffDetail.getStaffDetailId());
 //		return true;
 		StaffDetail staffDetail = staffDetailRepository.findById(staffId).orElseThrow(
-				() -> new ResourceNotFoundException("Staff Details", "StaffId", staffId)
+				() -> new ResourceNotFoundException("Staff Details", "StaffId", "staffId")
 		);
 
 

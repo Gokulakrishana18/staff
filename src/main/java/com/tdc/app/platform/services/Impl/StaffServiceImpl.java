@@ -1,8 +1,11 @@
 package com.tdc.app.platform.services.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.tdc.app.platform.exception.ResourceNotFoundException;
 import com.tdc.app.platform.services.Impl.StaffDetailServiceImpl;
 import com.tdc.app.platform.services.StaffService;
 import org.slf4j.Logger;
@@ -99,7 +102,93 @@ public class StaffServiceImpl implements StaffService {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * get the staff details based on phoneNumber
+	 * @param phoneNumber
+	 * @return
+	 */
+	@Override
+	public List<StaffRequest> getStaffByPhoneNumber(String phoneNumber) {
+
+		Staff staffDetail= staffRepository.findByPhone(phoneNumber).orElseThrow(
+				() -> new ResourceNotFoundException("Staff Details", "StaffId",phoneNumber ));
+		System.out.println("StaffDetails:"+staffDetail.getStaffId());
+		List<Staff> staff = new ArrayList<>();
+		staff.add(staffDetail);
+   List<StaffRequest> staffDetails = convertObjectIntoDto(staff);
+
+      return staffDetails;
+	}
+
+	/**
+	 * get staff details based on Country
+	 * @param country
+	 * @return StaffRequestDto
+	 */
+	@Override
+	public List<StaffRequest> getStaffByCounty(String country) {
+
+		List<Staff>ListOfStaffDetails=staffRepository.findByCountry(country.toUpperCase());
+		System.out.println("Size of List:"+ ListOfStaffDetails.size());
+		List<StaffRequest> staffDetails =  convertObjectIntoDto(ListOfStaffDetails);
+		return staffDetails;
+	}
+
+	@Override
+	public List<StaffRequest> getStaffByGender(String gender) {
+
+		List<Staff> staffList = staffRepository.findByGender(gender.toUpperCase());
+		List<StaffRequest> staffRequests = convertObjectIntoDto(staffList);
+		return staffRequests;
+	}
+
+	@Override
+	public List<StaffRequest> getStaffByIsActive(boolean isActive) {
+		List<Staff>staff = staffRepository.findByIsActive(true);
+		List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
+		return staffRequests;
+	}
+
+	@Override
+	public List<StaffRequest> getStaffByGmail(String email)throws  ResourceNotFoundException{
+		List<Staff> staff = staffRepository.findByEmail(email.toUpperCase());
+		if(!staff.isEmpty()) {
+			List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
+			return staffRequests;
+		}
+		else{
+		throw  new ResourceNotFoundException("Email","email",email);
+		}
+	}
+
+	public List<StaffRequest> convertObjectIntoDto(List<Staff> staffDetail){
+		List<StaffRequest> staffRequestList = new ArrayList<>();
+		for(Staff staffDetails:staffDetail) {
+			StaffRequest staffRequest = new StaffRequest();
+			staffRequest.setStaffId(staffDetails.getStaffId());
+			staffRequest.setFirstName(staffDetails.getFirstName());
+			staffRequest.setMiddleName(staffDetails.getMiddleName());
+			staffRequest.setLastName(staffDetails.getLastName());
+			staffRequest.setEmail(staffDetails.getEmail());
+			staffRequest.setPhone(staffDetails.getPhone());
+			//staffRequest.setDesigId(staffDetails.getDesig().getDesigId());
+			staffRequest.setAlternateContactNo(staffDetails.getAlternateContactNo());
+			staffRequest.setProfilePicturePath(staffDetails.getProfilePicturePath());
+			staffRequest.setGender(staffDetails.getGender());
+			staffRequest.setDateOfBirth(staffDetails.getDateOfBirth());
+			staffRequest.setJoiningDate(staffDetails.getJoiningDate());
+			staffRequest.setReportingTo(staffDetails.getReportingTo());
+			staffRequest.setState(staffDetails.getState());
+			staffRequest.setCountry(staffDetails.getCountry());
+			staffRequest.setPassword(staffDetails.getPassword());
+			staffRequest.setSalary(staffDetails.getSalary());
+			staffRequestList.add(staffRequest);
+		}
+
+		return staffRequestList;
+	}
+
 	//DateFormater implementation priority is normal
 
 }

@@ -17,7 +17,7 @@ public interface StaffRepository extends JpaRepository<Staff, Integer>{
 	 @Query("from Staff s where s.reportingTo=:reportingTo") 
 	 Staff findStaffsReportingTo(@Param("reportingTo") Integer reportingTo);
 
-	Optional<Staff> findByPhone(String phoneNumber);
+	List<Staff> findByPhone(String phoneNumber);
 
 	List<Staff> findByCountry(String country);
 

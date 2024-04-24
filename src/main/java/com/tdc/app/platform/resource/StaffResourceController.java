@@ -174,27 +174,9 @@ public class StaffResourceController {
     @GetMapping("/staff/phoneNumber")
 	@Operation(summary = "Fetch staff by id",description="Get the Record based on PhoneNumber")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
-	public StaffResponse fetchStaffByPhoneNumber(@RequestParam String phoneNumber ) throws ResourceNotFoundException {
-		System.out.println("Inside this fetch method");
-		StaffResponse staffResponse = new StaffResponse();
-//		StaffRequest staffRequest = new StaffRequest();
-//		int phone = Integer.parseInt(phoneNumber);
-		try {
+	public ResponseEntity<StaffRequest> fetchStaffByPhoneNumber(@RequestParam String phoneNumber ) throws ResourceNotFoundException {
 			List<StaffRequest> staffDetails = staffService.getStaffByPhoneNumber(phoneNumber);
-			staffResponse.setStatusCode("205");
-			staffResponse.setDataList(staffDetails);
-			staffResponse.setStatusMessage("Staff record Fetch successfully");
-			return  staffResponse;
-
-		} catch (Exception ex) {
-			ErrorMessage error = new ErrorMessage();
-			error.setErrorCode("500");
-			error.setErrorMessage("Not able to process");
-			staffResponse.setError(error);
-			LOGGER.error("Staff record not processed {}", ex);
-			return staffResponse;
-		}
-
+			return ResponseEntity.ok().body(staffDetails.get(0)) ;
 	}
 
 	/**
@@ -206,23 +188,9 @@ public class StaffResourceController {
 	@GetMapping("/staff/country")
 	@Operation(summary = "Fetch staff by country",description="Get the Record based on country ")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
-	public StaffResponse fetchStaffsByCountry(@RequestParam String country ) throws ResourceNotFoundException {
-		StaffResponse staffResponse = new StaffResponse();
-		try {
+	public ResponseEntity<List<StaffRequest>> fetchStaffsByCountry(@RequestParam String country ) throws ResourceNotFoundException {
 			List<StaffRequest> staffDetails =  staffService.getStaffByCounty(country);
-			staffResponse.setStatusCode("205");
-			staffResponse.setDataList(staffDetails);
-			staffResponse.setStatusMessage("Staff record Fetch successfully");
-			return  staffResponse;
-
-		} catch (Exception ex) {
-			ErrorMessage error = new ErrorMessage();
-			error.setErrorCode("500");
-			error.setErrorMessage("Not able to process");
-			staffResponse.setError(error);
-			LOGGER.error("Staff record not processed {}", ex);
-			return staffResponse;
-		}
+			return  ResponseEntity.ok().body(staffDetails);
 
 	}
 
@@ -235,24 +203,9 @@ public class StaffResourceController {
 	@GetMapping("/staff/Gender")
 	@Operation(summary = "fetch details by Gender", description = "Fetch the stuff Details based on gender")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
-	public StaffResponse fetchStaffBYGender(@RequestParam String Gender) throws ResourceNotFoundException{
-		StaffResponse staffResponse = new StaffResponse();
-		try{
-			List<StaffRequest> staffDetails = staffService.getStaffByGender(Gender);
-			staffResponse.setStatusCode("205");
-			staffResponse.setDataList(staffDetails);
-			staffResponse.setStatusMessage("Staff record Fetch successfully");
-			return  staffResponse;
-		}
-		catch(Exception ex){
-			ErrorMessage error = new ErrorMessage();
-			error.setErrorCode("500");
-			error.setErrorMessage("Not able to process");
-			staffResponse.setError(error);
-			LOGGER.error("Staff record not processed {}", ex);
-			return staffResponse;
-
-		}
+	public ResponseEntity<List<StaffRequest>> fetchStaffBYGender(@RequestParam String Gender) throws ResourceNotFoundException{
+		List<StaffRequest> staffDetails = staffService.getStaffByGender(Gender);
+		return ResponseEntity.ok().body(staffDetails);
 
 	}
 
@@ -265,27 +218,10 @@ public class StaffResourceController {
 	@GetMapping("/staff/email")
 	@Operation(summary = "fetch details by email", description = "Fetch the stuff Details based on email")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
-	public ResponseEntity<StaffResponse> fetchStaffBYEmail(@RequestParam String email) throws ResourceNotFoundException{
-		StaffResponse staffResponse = new StaffResponse();
-		try{
-			List<StaffRequest> staffDetails = staffService.getStaffByGmail(email);
-			staffResponse.setStatusCode("205");
-			staffResponse.setDataList(staffDetails);
-			staffResponse.setStatusMessage("Staff record Fetch successfully");
-			return ResponseEntity.status(HttpStatus.OK).body(staffResponse);
-//			return  staffResponse;
-		}
-		catch(Exception ex){
-			ErrorMessage error = new ErrorMessage();
-			error.setErrorCode("500");
-			error.setErrorMessage(ex.toString());
-			staffResponse.setError(error);
-			System.out.println("Exception :"+ ex);
-			LOGGER.error("Staff record not processed {}", ex);
-
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(staffResponse);
-		}
-
+	public ResponseEntity<StaffRequest> fetchStaffBYEmail(@RequestParam String email)		{
+		List<StaffRequest> staffDetails = staffService.getStaffByGmail(email);
+		StaffRequest staffRequest = staffDetails.get(0);
+		return ResponseEntity.status(HttpStatus.OK).body(staffRequest);
 	}
 
 	/**
@@ -297,25 +233,8 @@ public class StaffResourceController {
 	@GetMapping("/staff/isActive")
 	@Operation(summary = "fetch details by Gender", description = "Fetch the stuff Details based on gender")
 	@ApiResponses(value={@ApiResponse(responseCode = "200", description = "successFul operation")})
-	public StaffResponse fetchStaffByActiveStatus(@RequestParam Boolean isActive) throws ResourceNotFoundException{
-		StaffResponse staffResponse = new StaffResponse();
-		try{
-			List<StaffRequest> staffDetails = staffService.getStaffByIsActive(isActive);
-			staffResponse.setStatusCode("205");
-			staffResponse.setDataList(staffDetails);
-			staffResponse.setStatusMessage("Staff record Fetch successfully");
-			return  staffResponse;
-		}
-		catch(Exception ex){
-			ErrorMessage error = new ErrorMessage();
-			error.setErrorCode("500");
-			error.setErrorMessage("Not able to process");
-			staffResponse.setError(error);
-			LOGGER.error("Staff record not processed {}", ex);
-			return staffResponse;
-		}
-
+	public ResponseEntity<List<StaffRequest>> fetchStaffByActiveStatus(@RequestParam Boolean isActive) throws ResourceNotFoundException{
+		List<StaffRequest> staffDetails = staffService.getStaffByIsActive(isActive);
+		return ResponseEntity.ok().body(staffDetails);
 	}
-
-
 }

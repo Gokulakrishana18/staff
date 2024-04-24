@@ -111,14 +111,14 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public List<StaffRequest> getStaffByPhoneNumber(String phoneNumber) {
 
-		Staff staffDetail= staffRepository.findByPhone(phoneNumber).orElseThrow(
-				() -> new ResourceNotFoundException("Staff Details", "StaffId",phoneNumber ));
-		System.out.println("StaffDetails:"+staffDetail.getStaffId());
-		List<Staff> staff = new ArrayList<>();
-		staff.add(staffDetail);
-   List<StaffRequest> staffDetails = convertObjectIntoDto(staff);
-
-      return staffDetails;
+		List<Staff> staff= staffRepository.findByPhone(phoneNumber);
+		if(!staff.isEmpty()) {
+			List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
+			return staffRequests;
+		}
+		else{
+			throw  new ResourceNotFoundException("Stuff","email",phoneNumber);
+		}
 	}
 
 	/**
@@ -129,25 +129,39 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public List<StaffRequest> getStaffByCounty(String country) {
 
-		List<Staff>ListOfStaffDetails=staffRepository.findByCountry(country.toUpperCase());
-		System.out.println("Size of List:"+ ListOfStaffDetails.size());
-		List<StaffRequest> staffDetails =  convertObjectIntoDto(ListOfStaffDetails);
-		return staffDetails;
+		List<Staff>staff=staffRepository.findByCountry(country.toUpperCase());
+		if(!staff.isEmpty()) {
+			List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
+			return staffRequests;
+		}
+		else{
+			throw  new ResourceNotFoundException("Stuff","country",country);
+		}
 	}
 
 	@Override
 	public List<StaffRequest> getStaffByGender(String gender) {
 
-		List<Staff> staffList = staffRepository.findByGender(gender.toUpperCase());
-		List<StaffRequest> staffRequests = convertObjectIntoDto(staffList);
-		return staffRequests;
+		List<Staff> staff = staffRepository.findByGender(gender.toUpperCase());
+		if(!staff.isEmpty()) {
+			List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
+			return staffRequests;
+		}
+		else{
+			throw  new ResourceNotFoundException("Stuff","Gender",gender);
+		}
 	}
 
 	@Override
 	public List<StaffRequest> getStaffByIsActive(boolean isActive) {
 		List<Staff>staff = staffRepository.findByIsActive(true);
-		List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
-		return staffRequests;
+		if(!staff.isEmpty()) {
+			List<StaffRequest> staffRequests = convertObjectIntoDto(staff);
+			return staffRequests;
+		}
+		else{
+			throw  new ResourceNotFoundException("Stuff","IsActive","isActive");
+		}
 	}
 
 	@Override
